@@ -1,0 +1,7 @@
+{
+  "name": "Lotus Client Portal & Customer Management",
+  "description": "Production-ready Customer Management System & secure Client Portal for digital and web development agencies, featuring project tracking, ad analytics, payments, bookings, notifications, support, and reviews.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

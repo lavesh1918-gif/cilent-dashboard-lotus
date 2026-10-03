@@ -1,0 +1,76 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Default deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Admins collection
+    match /admins/{adminId} {
+      allow list: if true;
+      allow get, create, update, delete: if isValidId(adminId);
+    }
+
+    // Customers collection
+    match /customers/{customerId} {
+      allow list: if true;
+      allow get: if isValidId(customerId);
+      allow create, update, delete: if isValidId(customerId);
+
+      // Subcollection: Projects
+      match /projects/{projectId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(projectId);
+      }
+
+      // Subcollection: Payment Requests
+      match /paymentRequests/{requestId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(requestId);
+      }
+
+      // Subcollection: Payments
+      match /payments/{paymentId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(paymentId);
+      }
+
+      // Subcollection: Bookings
+      match /bookings/{bookingId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(bookingId);
+      }
+
+      // Subcollection: Notifications
+      match /notifications/{notificationId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(notificationId);
+      }
+
+      // Subcollection: Support Tickets
+      match /support/{ticketId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(ticketId);
+      }
+
+      // Subcollection: Reviews
+      match /reviews/{reviewId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(reviewId);
+      }
+
+      // Subcollection: Ads Daily Data
+      match /ads/{adId} {
+        allow list: if isValidId(customerId);
+        allow get, create, update, delete: if isValidId(customerId) && isValidId(adId);
+      }
+    }
+  }
+}

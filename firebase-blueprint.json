@@ -1,0 +1,264 @@
+{
+  "entities": {
+    "Customer": {
+      "title": "Customer",
+      "description": "Client profile and contact information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 100 },
+        "businessName": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 150 },
+        "mobile": { "type": "string", "maxLength": 30 },
+        "businessAddress": { "type": "string", "maxLength": 300 },
+        "service": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "profilePhoto": { "type": "string", "maxLength": 500 },
+        "accessToken": { "type": "string", "maxLength": 128 },
+        "tokenStatus": { "type": "string", "enum": ["active", "disabled"] },
+        "totalAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "businessName", "accessToken", "tokenStatus"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Project details and development progress",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 150 },
+        "serviceName": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "startDate": { "type": "string", "maxLength": 30 },
+        "expectedCompletionDate": { "type": "string", "maxLength": 30 },
+        "totalAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "progress": { "type": "number" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Pending",
+            "Started",
+            "In Progress",
+            "Review",
+            "Preview Ready",
+            "Final Payment Pending",
+            "Completed",
+            "Delivered",
+            "On Hold"
+          ]
+        },
+        "previewUrl": { "type": "string", "maxLength": 500 },
+        "liveWebsiteUrl": { "type": "string", "maxLength": 500 },
+        "adminNotes": { "type": "string", "maxLength": 2000 },
+        "customerUpdates": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "name", "status", "progress"]
+    },
+    "PaymentRequest": {
+      "title": "PaymentRequest",
+      "description": "Payment requests created by admin for the customer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "amount": { "type": "number" },
+        "reason": { "type": "string", "maxLength": 300 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "dueDate": { "type": "string", "maxLength": 30 },
+        "projectId": { "type": "string", "maxLength": 64 },
+        "paymentInstructions": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["pending", "submitted", "paid", "cancelled"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "title", "amount", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payment records and customer submission proofs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "projectId": { "type": "string", "maxLength": 64 },
+        "requestId": { "type": "string", "maxLength": 64 },
+        "amount": { "type": "number" },
+        "utr": { "type": "string", "maxLength": 64 },
+        "paymentDate": { "type": "string", "maxLength": 30 },
+        "upiId": { "type": "string", "maxLength": 100 },
+        "paymentProofUrl": { "type": "string", "maxLength": 1000 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["Pending", "Verified", "Rejected"] },
+        "rejectionReason": { "type": "string", "maxLength": 500 },
+        "verifiedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "amount", "utr", "status"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Service orders and appointments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "serviceName": { "type": "string", "maxLength": 150 },
+        "bookingDate": { "type": "string", "maxLength": 30 },
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "In Progress", "Completed", "Cancelled"] },
+        "tokenStatus": { "type": "string", "maxLength": 50 },
+        "projectId": { "type": "string", "maxLength": 64 },
+        "adminNotes": { "type": "string", "maxLength": 1000 },
+        "appointmentDetails": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "serviceName", "bookingDate", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Customer notification and alert items",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "type": { "type": "string", "enum": ["Payment", "Project", "Ads", "Booking", "Support", "General", "System"] },
+        "relatedProjectId": { "type": "string", "maxLength": 64 },
+        "relatedPaymentId": { "type": "string", "maxLength": 64 },
+        "actionButton": { "type": "string", "maxLength": 50 },
+        "actionUrl": { "type": "string", "maxLength": 200 },
+        "priority": { "type": "string", "enum": ["low", "normal", "high", "urgent"] },
+        "read": { "type": "boolean" },
+        "popupShown": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "title", "message", "type", "read"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Customer support requests and inquiries",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "subject": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 100 },
+        "message": { "type": "string", "maxLength": 3000 },
+        "relatedProjectId": { "type": "string", "maxLength": 64 },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "status": { "type": "string", "enum": ["Open", "In Progress", "Waiting for Customer", "Resolved", "Closed"] },
+        "adminReply": { "type": "string", "maxLength": 3000 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "subject", "message", "status", "priority"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer project ratings and reviews",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "projectId": { "type": "string", "maxLength": 64 },
+        "projectName": { "type": "string", "maxLength": 150 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 2000 },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "businessName": { "type": "string", "maxLength": 150 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "projectId", "rating", "comment"]
+    },
+    "AdsDailyData": {
+      "title": "AdsDailyData",
+      "description": "Daily advertising metrics for Meta, Google, or Local/GMB",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 64 },
+        "platform": { "type": "string", "enum": ["meta", "google", "local"] },
+        "date": { "type": "string", "maxLength": 20 },
+        "impressions": { "type": "number" },
+        "reach": { "type": "number" },
+        "clicks": { "type": "number" },
+        "calls": { "type": "number" },
+        "websiteClicks": { "type": "number" },
+        "localActions": { "type": "number" },
+        "leads": { "type": "number" },
+        "spend": { "type": "number" },
+        "ctr": { "type": "number" },
+        "conversions": { "type": "number" },
+        "conversionValue": { "type": "number" },
+        "profileViews": { "type": "number" },
+        "messages": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerId", "platform", "date"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Admin configuration and verified administrators",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 150 },
+        "name": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["superadmin", "admin"] }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/Customer" },
+      "description": "Customer profiles and top-level accounts"
+    },
+    "/customers/{customerId}/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Projects belonging to a specific customer"
+    },
+    "/customers/{customerId}/paymentRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/PaymentRequest" },
+      "description": "Payment requests issued by admin for a customer"
+    },
+    "/customers/{customerId}/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/Payment" },
+      "description": "Payment submissions and transactions for a customer"
+    },
+    "/customers/{customerId}/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Service bookings and appointments for a customer"
+    },
+    "/customers/{customerId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "Notifications for a specific customer"
+    },
+    "/customers/{customerId}/support/{ticketId}": {
+      "schema": { "$ref": "#/entities/SupportTicket" },
+      "description": "Support tickets raised by or on behalf of customer"
+    },
+    "/customers/{customerId}/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Reviews submitted by customer for completed projects"
+    },
+    "/customers/{customerId}/ads/{adId}": {
+      "schema": { "$ref": "#/entities/AdsDailyData" },
+      "description": "Daily ad performance metrics for Meta, Google, and Local campaigns"
+    },
+    "/admins/{uid}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Authorized administrators list"
+    }
+  }
+}
